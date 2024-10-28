@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:web_app/locationModel.dart';
-import 'package:web_app/vehicleRateModel.dart';
+import 'package:web_app/Screens/Entry_Screen/Model/locationModel.dart';
+import 'package:web_app/Screens/Entry_Screen/Model/vehicleRateModel.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
