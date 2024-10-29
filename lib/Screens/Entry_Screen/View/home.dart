@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,9 +22,10 @@ class EntryScreen extends StatelessWidget {
         init: EntryController(),
         id: 'home',
         builder: (controller) {
+          log('location ius ${controller.locationType}');
           return Scaffold(
               appBar: AppBar(
-                title: const Text('Vehicle Rates'),
+                title: const Text('Vehicle Entry'),
                 actions: [
                   IconButton(
                     onPressed: () async {
@@ -197,7 +200,14 @@ class EntryScreen extends StatelessWidget {
                                 .trim()
                                 .isNotEmpty &&
                             controller.selectedVehicle.value != 0) {
-                          controller.insert();
+                          controller.insert().then(
+                            (value) {
+                              controller.selectedVehicle.value = 0;
+                              controller.vehicleNoController.clear();
+                              controller.locationType = null;
+                              controller.update();
+                            },
+                          );
                         } else {
                           Get.snackbar(
                             'Error',

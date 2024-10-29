@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -22,15 +21,13 @@ class ExitScreen extends GetView<ExitController> {
         builder: (_) {
           return Scaffold(
               appBar: PreferredSize(
-                preferredSize: Size(Get.width, 65.h),
+                preferredSize: Size(Get.width, 40.h),
                 child: AppBar(
-                  actions: [
-                    Text(
-                      "Parking Management",
-                      style: getTextTheme().headlineLarge,
-                    ),
-                    Gap(20.w)
-                  ],
+                  title: Text(
+                    "Vehicle Exit",
+                    style: getTextTheme().headlineLarge,
+                  ),
+                  centerTitle: true,
                   backgroundColor: ConstColors.white,
                   surfaceTintColor: ConstColors.backgroundColor,
                 ),
@@ -51,7 +48,6 @@ class ExitScreen extends GetView<ExitController> {
                           child: Container(
                               height: 100.h,
                               width: 250.w,
-                              //padding: EdgeInsets.symmetric(vertical: 50.h,horizontal: 100.w),
                               margin: EdgeInsets.symmetric(
                                   vertical: 15.h, horizontal: 0.w),
                               decoration: BoxDecoration(
@@ -65,20 +61,15 @@ class ExitScreen extends GetView<ExitController> {
                               ))),
                         ),
                       ),
+                      Gap(10.h),
                       TextField(
                         controller: controller.outputController,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(10),
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'[a-zA-Z0-9]'),
-                          )
-                        ],
                         decoration: InputDecoration(
-                          //label: const Text("Qr number: "),
+                          fillColor: ConstColors.white,
+                          filled: true,
                           labelStyle: getTextTheme().labelMedium,
                           hintText: "Please enter vehicle number",
                           hintStyle: getTextTheme().labelSmall,
-
                           suffixIcon: InkWell(
                             onTap: () {
                               controller.fetchVehicleData(
@@ -93,12 +84,16 @@ class ExitScreen extends GetView<ExitController> {
                           ),
                           border: const UnderlineInputBorder(
                               borderSide: BorderSide(color: ConstColors.green)),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: ConstColors.green,
+                            ),
+                          ),
                         ),
                         onChanged: (value) {
                           controller.outputController.text =
                               value.trim().toUpperCase();
                         },
-                        //readOnly: true,
                       ),
                       controller.totalParkingCharges.text != ""
                           ? Column(
@@ -115,6 +110,13 @@ class ExitScreen extends GetView<ExitController> {
                                         color: ConstColors.green,
                                       ),
                                     ),
+                                    focusedBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: ConstColors.green,
+                                      ),
+                                    ),
+                                    fillColor: ConstColors.white,
+                                    filled: true,
                                   ),
                                 ),
                                 Gap(20.h),
@@ -139,9 +141,17 @@ class ExitScreen extends GetView<ExitController> {
                                                     controller.outputController
                                                             .text !=
                                                         "")
-                                                ? () {
-                                                    controller.fetchVehicleData(
-                                                        checkOut: false);
+                                                ? () async {
+                                                    controller.isLoading.value =
+                                                        true;
+                                                    await controller
+                                                        .fetchVehicleData(
+                                                            vehicleNo: controller
+                                                                .outputController
+                                                                .text,
+                                                            checkOut: true);
+                                                    controller.isLoading.value =
+                                                        false;
                                                   }
                                                 : null,
                                         text: "Check Out")

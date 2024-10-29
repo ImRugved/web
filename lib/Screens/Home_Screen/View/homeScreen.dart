@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:web_app/Constant/constColors.dart';
 import 'package:web_app/Constant/constTextTheme.dart';
+import 'package:web_app/Screens/Drawer_Screen/View/drawer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,19 +12,16 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const MenuDrawer(),
       appBar: PreferredSize(
         preferredSize: Size(Get.width, 65.h),
         child: AppBar(
-          // title: Image.asset(
-          //   "assets/images/parkingLogo.png",
-          //   height: 65.h,
-          //   width: 100.w,
-          // ),
+          centerTitle: true,
+          title: Text(
+            "Parking Management",
+            style: getTextTheme().headlineLarge,
+          ),
           actions: [
-            Text(
-              "Parking Management",
-              style: getTextTheme().headlineLarge,
-            ),
             IconButton(
                 onPressed: () async {
                   await GetStorage().erase();
